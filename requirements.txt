@@ -1,0 +1,11 @@
+joblib==1.4.2
+nbformat==5.10.4
+numpy==2.2.2
+pandas==2.2.3
+scikit-learn==1.6.1
+streamlit==1.42.0
+lime
+matplotlib
+seaborn
+shap
+warnings
