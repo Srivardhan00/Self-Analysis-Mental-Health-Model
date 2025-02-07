@@ -46,22 +46,88 @@ The data was collected from a sample of university students, so the findings may
 
 ## Dataset Preprocessing Steps
 
-1. **Data Cleaning**: Missing values are handled using imputation strategies.
-2. **Feature Engineering**: Symptoms and questionnaire scores are transformed into numerical features.
-3. **Encoding**: Labels are encoded into categorical values.
-4. **Scaling**: Standardization is applied using `StandardScaler`.
+1. **Data Cleaning**:
 
----
+   - Removed rows with null/NaN values, then 765 rows were remaining.
+   - Dropped columns of 'id' and 'school_year' as intended to make a general model.
+   - Few rows were with 0.0 BMI, set their who_bmi to 'Normal', as its the mode for complete dataset.
 
-## Exploratory Data Analysis (EDA)
+2. **Exploratory Data Analysis** :
 
-Before training the models, EDA was performed to understand the dataset:
+   - **Understanding Data:** I used a summary function to see the distribution of age, depression scores, and anxiety scores.
 
-1. **Distribution Analysis**: Histograms and boxplots were used to visualize the distribution of PHQ and GAD scores.
-2. **Correlation Analysis**: A heatmap was generated to identify relationships between features.
-3. **Missing Value Analysis**: Checked for NaN values and handled them appropriately.
-4. **Class Distribution**: Bar plots were used to observe class imbalances in depression and anxiety severity levels.
-5. **Feature Importance**: Used feature importance scores from Random Forest to select the most relevant features.
+   - **Gender and Depressiveness:** Females in the dataset tend to report feeling more depressive than males.
+
+   - **BMI and Depressiveness:** As BMI category increases (from normal to overweight to obese), the proportion of people reporting depressiveness also tends to increase. However, most of the people in the dataset fall into the "normal" and "overweight" BMI categories, so these groups have the largest number of people reporting depressiveness simply because there are more people in those categories.
+
+   - **BMI and Depressiveness (Males):** Among males, the same pattern holds – higher BMI categories are associated with more depressiveness, with a particularly high level among obese males.
+
+   - **BMI and Depressiveness (Females):** The same trend is seen in females, but the proportion of depressive females is generally higher than males across all BMI categories.
+
+   - **Age and Depressiveness:** Most people reporting depressiveness are between 18 and 24 years old, with the highest number at age 19.
+
+   - **Age and Depressiveness (Correlation):** There's a negative relationship between age and depressiveness, meaning that as age increases, reported depressiveness tends to decrease (though this doesn't imply causation).
+
+   - **Age and Anxiousness (Correlation):** A similar negative relationship exists between age and anxiousness.
+
+   - **Age of Depressed Individuals:** The average age of people reporting depressiveness is around 20, with most being in their late teens and early twenties.
+
+   - **Age and Anxiousness Pattern:** The relationship between age and anxiousness is similar to that of age and depressiveness.
+
+   - **Age and Sleepiness:** The relationship between age and sleepiness is different and less clear compared to age and depressiveness/anxiousness. There are fewer people reporting sleepiness, and they are spread across a wider age range.
+
+   - **Depression Diagnosis:** A small proportion of people who report feeling depressive have actually received a formal diagnosis of depression.
+
+   - **Depression Treatment:** Even fewer people who report depressiveness are receiving formal treatment for it.
+
+   - **Suicidal Thoughts and Depressiveness:** People who report suicidal thoughts almost always report feeling depressive.
+
+   - **Anxiety Diagnosis and Treatment:** Similar to depression, few people who report feeling anxious have received a formal diagnosis or treatment for anxiety.
+
+   - **Sleepiness with Anxiety and Depression:** About half of the people who report feeling anxious or depressive also report feeling sleepy.
+
+   - **Suicidal Thoughts and Anxiousness:** People who report suicidal thoughts may or may not also report feeling anxious.
+
+   - **Depression Severity by Gender:** Most males report mild or minimal/no depression severity, while females report mild, minimal/none, and moderate severity.
+
+   - **Anxiety Severity by Gender:** Most males report minimal/none followed by mild anxiety, whereas females mostly report mild and then minimal/none.
+
+   - **Depression Severity by Age:** Across different age groups, the order of depression severity from most to least common is generally: mild > minimal/none > moderate > moderately severe > severe > none.
+
+   - **Anxiety Severity by Age:** A similar pattern is observed for anxiety severity across age groups: mild > minimal/none > moderate > severe.
+
+   **Correlations**
+
+   - **Suicidal vs. Depressiveness** (0.50):Moderate Positive Correlation: This suggests a moderately strong tendency for individuals with higher levels of depressiveness to also report higher levels of suicidal ideation or attempts.
+   - **Suicidal vs. Anxiousness** (0.27):Weak Positive Correlation: There's a slight tendency for individuals with higher levels of anxiousness to also report more suicidal thoughts, but the relationship is not as strong.
+   - **Suicidal vs. Sleepiness** (0.17):Very Weak Positive Correlation: The relationship between sleepiness and suicidal thoughts is minimal. There might be a slight tendency, but it's not a strong or reliable association.
+   - **Depressiveness vs. Anxiousness** (0.47): Moderate Positive Correlation: Individuals with higher levels of depressiveness tend to also report higher levels of anxiousness, indicating that these two often co-occur.
+   - **Depressiveness vs. Sleepiness** (0.23): Weak Positive Correlation: Similar to the relationship with suicidal thoughts, there is a weak association between depressiveness and sleepiness.
+   - **Anxiousness vs. Sleepiness** (0.23): Weak Positive Correlation: A weak association exists between anxiousness and sleepiness.
+
+3. **Encoding**:
+
+   - **Boolean Features**: The boolean features ['depressiveness', 'suicidal', 'depression_diagnosis', 'depression_treatment', 'anxiousness', 'anxiety_diagnosis', 'anxiety_treatment', 'sleepiness'] were converted to integer type, with True/False (or similar) values represented as 1 and 0, respectively.
+   - **Ordinal Categorical Features**: Ordinal categorical features ( 'who_bmi', 'depression_severity', and 'anxiety_severity') were transformed into numerical sequences using a mapping. This mapping preserved the order of the categories (e.g., 'Mild' might be mapped to 1, 'Moderate' to 2, etc.). The specific mapping used should be documented elsewhere.
+   - **Gender**: The 'gender' feature was encoded using 0 and 1 to represent the two distinct gender categories. The specific assignment of 0 and 1 to each gender should be documented.
+
+   **New Correlations Found**
+
+   **Strong Correlations (Positive or Negative):**
+
+   - **phq_score (Depression Score) and gad_score (Anxiety Score) (0.66):** A strong positive correlation suggests individuals with higher depression scores tend to have higher anxiety scores.
+   - **depression_severity and gad_score (0.63):** Similar to the above, higher depression severity is associated with higher anxiety scores.
+   - **gad_score and anxiety_severity (0.95):** This very high correlation is expected as anxiety_severity is likely derived from gad_score.
+   - **anxiety_severity and anxiousness (0.79):** A high correlation is expected given the similarity of these measures.
+   - **depression_diagnosis and depression_treatment (0.69):** Individuals diagnosed with depression are more likely to receive treatment.
+   - **anxiety_diagnosis and anxiety_treatment (0.69):** Similarly, individuals diagnosed with anxiety are more likely to receive treatment.
+
+   **Moderate Correlations:**
+
+   - **depressiveness and suicidal (0.50):** Reinforces the link between depressiveness and suicidal ideation.
+   - **phq_score and depressiveness (0.74):** High correlation suggests self-reported depressiveness aligns with phq_score.
+   - **gad_score and depressiveness (0.50):** Higher anxiety scores are associated with higher levels of reported depressiveness.
+   - **anxiousness and depressiveness (0.47):** Suggests a moderate overlap between anxiety and depressive symptoms.
 
 ---
 
