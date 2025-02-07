@@ -131,15 +131,29 @@ The data was collected from a sample of university students, so the findings may
 
 ---
 
-## Feature Selection and Model Comparison
+## Feature Selection
 
-1. **Feature Selection**: After identifying important features, a combined dataset was created with selected variables for both depression and anxiety.
-2. **Model Training**: Two models were compared using GridSearchCV for hyperparameter tuning:
-   - **Logistic Regression**: Used as a baseline model.
-   - **Random Forest**: Evaluated for better performance and robustness.
-3. **Final Model Choice**: The best model was chosen based on cross-validation performance and evaluation metrics.
+1. **Splitting Dataset**: The dataset is split to train and test datasets.
+2. **Getting Feature Importance** : Important features are identified using Random Forest Classifier, which was trained seperately for depression severity and anxiety severity.
 
-### **Final Model Selection:**
+```python
+Depression Top 5 Features: Index(['phq_score', 'depressiveness', 'gad_score', 'age'], dtype='object')
+Anxiety Top 5 Features: Index(['gad_score', 'anxiousness', 'phq_score', 'depressiveness'], dtype='object')
+```
+
+3. **Feature Selection and Model Training**: After identifying important features, a combined dataset was created with selected variables for both depression and anxiety. Only these features were further used to train models.
+
+```py
+Selected Features: ['age', 'phq_score', 'depressiveness', 'gad_score', 'anxiousness']
+```
+
+4. **Remove rare classes**: Rare classes with count less than 4 are removed.
+
+5. **Model Training**: Both models were trained with `class_weight="balanced"` for handling population imbalance.
+   - **Random Forest**: Trained with hyperparameter tuning using `GridSearchCV`, and then 2 models were selected with best estimators for anxiety severeness and depression severeness.
+   - **Logistic Regression**: with max_iterations =1000, a logistic regression model was trained.
+
+### **Final Model Comparison and Selection:**
 
 The models were evaluated based on the following metrics:
 
@@ -148,6 +162,30 @@ The models were evaluated based on the following metrics:
 - **Precision & Recall**
 - **F1-score**
 - **ROC-AUC Score**
+
+- **For Depression Severity** :
+
+  - Random Forest (99% Accuracy)
+    Very high precision and recall across all classes.
+    Class Imbalance Consideration: Some classes (e.g., severity level 0 and 5) have very few samples, but RF still predicts them well.
+  - Logistic Regression (88% Accuracy)
+    Poor performance on rare classes (0, 4)
+
+  - **Conclusion**: RF is far superior for depression severity prediction. LR struggles due to non-linearity and class imbalance.
+
+- **For Anxiety Severity** :
+  - Random Forest (100% Accuracy)
+    Perfect classification across all classes.
+    This suggests that anxiety severity is easier to classify with RF due to clear patterns in the data.
+  - Logistic Regression (99% Accuracy)
+    Performs almost as well as RF, but slightly lower precision/recall for some classes.
+  - **Conclusion**: Both models perform well, but RF still has a slight edge.
+
+In both the cases, the final model chosen is Random Forest.
+
+#### Cross Validation
+
+The final average `cross_val_score` for both RF models with StratifiedKFold are 0.998 for depression severity and 1.0 for anxiety severity.
 
 The final models are saved using `joblib` for inference.
 
