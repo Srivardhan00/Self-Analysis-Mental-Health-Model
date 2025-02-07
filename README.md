@@ -137,8 +137,8 @@ The data was collected from a sample of university students, so the findings may
 2. **Getting Feature Importance** : Important features are identified using Random Forest Classifier, which was trained seperately for depression severity and anxiety severity.
 
 ```python
-Depression Top 5 Features: Index(['phq_score', 'depressiveness', 'gad_score', 'age'], dtype='object')
-Anxiety Top 5 Features: Index(['gad_score', 'anxiousness', 'phq_score', 'depressiveness'], dtype='object')
+Depression Top 4 Features: Index(['phq_score', 'depressiveness', 'gad_score', 'age'], dtype='object')
+Anxiety Top 4 Features: Index(['gad_score', 'anxiousness', 'phq_score', 'depressiveness'], dtype='object')
 ```
 
 3. **Feature Selection and Model Training**: After identifying important features, a combined dataset was created with selected variables for both depression and anxiety. Only these features were further used to train models.
