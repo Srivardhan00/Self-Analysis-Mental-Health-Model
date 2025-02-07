@@ -6,17 +6,50 @@ This project is a machine learning-based tool for predicting mental health condi
 
 ---
 
+## About Dataset
+
+- **File** :`depression_anxiety_data.csv`
+- **Source** : `https://www.kaggle.com/datasets/shahzadahmad0402/depression-and-anxiety-data`
+- **Samples**: 783
+- **Features**: 19
+
+### Dataset Features:
+
+- id: unique key
+- school_year: Current school year of the participant (ranges from 1 to 4). [Numerical (Ordinal)]
+- age: Age of the participant. [Numerical (Continuous)
+- gender: Gender of the participant. [Categorical (Nominal)]
+- bmi: Body Mass Index value of the participant. [Numerical (Continuous)]
+- who_bmi: Classification of WHO BMI based on the bmi value. [Categorical (Ordinal)]
+- phq_score: Measure of the severity of symptoms related to depression (numerical score). [Numerical (Discrete)]
+- depression_severity: Category of depression based on the phq_score (e.g., Minimal, Mild, Moderate, Moderately Severe, Severe). [Categorical (Ordinal)]
+- depressiveness: A boolean feature, indicating the presence of depressiveness. [Boolean]
+- suicidal: A boolean feature, indicating suicidal ideation or attempts. [Boolean]
+- depression_diagnosis: A boolean feature, indicating a formal diagnosis of depression. [Boolean]
+- depression_treatment: A boolean feature, indicating a formal treatment of depression. [Boolean]
+- gad_score: Measure of the severity of symptoms related to generalized anxiety disorder (numerical score). [Numerical (Discrete)]
+- anxiety_severity: Category of anxiety based on the gad_score (e.g., Minimal, Mild, Moderate, Severe). [Categorical (Ordinal)]
+- anxiousness: A boolean feature, indicating the presence of anxiety. [Boolean]
+- anxiety_diagnosis: A boolean feature, indicating a formal diagnosis of anxiety. [Boolean]
+- anxiety_treatment: A boolean feature, indicating a formal treatment of anxiety. [Boolean]
+- epworth_score: A score from the Epworth Sleepiness Scale, measuring daytime sleepiness. [Numerical (Discrete)]
+- sleepiness: A boolean feature, indicating the presence of sleepiness. [Boolean]
+
+### Target Variables
+
+- depression_severity
+- anxiety_severity
+
+### **Limitation**
+
+The data was collected from a sample of university students, so the findings may not be generalizable to other populations.
+
 ## Dataset Preprocessing Steps
 
 1. **Data Cleaning**: Missing values are handled using imputation strategies.
 2. **Feature Engineering**: Symptoms and questionnaire scores are transformed into numerical features.
-3. **Scaling**: Standardization is applied using `StandardScaler`.
-4. **Encoding**: Labels are encoded into categorical values.
-
-### **Dataset Used**
-
-- **File**: `depression_anxiety_data.csv`
-- **Description**: Contains mental health survey responses, including PHQ and GAD scores.
+3. **Encoding**: Labels are encoded into categorical values.
+4. **Scaling**: Standardization is applied using `StandardScaler`.
 
 ---
 
@@ -43,6 +76,7 @@ Before training the models, EDA was performed to understand the dataset:
 ### **Final Model Selection:**
 
 The models were evaluated based on the following metrics:
+
 - **Classification Report**
 - **Accuracy**
 - **Precision & Recall**
