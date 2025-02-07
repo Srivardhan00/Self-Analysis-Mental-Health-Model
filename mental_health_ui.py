@@ -8,17 +8,15 @@ from sklearn.preprocessing import StandardScaler
 try:
     rf_depression = load('rf_depression.joblib')
     rf_anxiety = load('rf_anxiety.joblib')
-    scaler = load('scaler.joblib')  # Load the scaler you saved during training
+    scaler = load('scaler.joblib') 
 except FileNotFoundError:
     st.error("Model files not found. Please ensure they are in the correct directory.")
     st.stop()
 
-# Define input features (WITHOUT 'internally')
-input_features = ['anxiousness', 'phq_score', 'depressiveness', 'age', 'gad_score']
+input_features = ['phq_score', 'gad_score', 'depressiveness', 'anxiousness', 'age']
 
 st.title("Mental Health Severity Prediction")
 
-# Input Fields (WITHOUT 'internally')
 user_inputs = {}
 for feature in input_features:
     if feature in ['anxiousness', 'depressiveness']:  # Boolean inputs
@@ -30,7 +28,6 @@ for feature in input_features:
     elif feature == 'gad_score':  # GAD range 0-21
         user_inputs[feature] = st.number_input(f"{feature.capitalize()}:", min_value=0, max_value=21, step=1)
     # No 'internally' input
-
 
 # Prediction Button
 if st.button("Predict"):
